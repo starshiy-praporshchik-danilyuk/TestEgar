@@ -21,4 +21,11 @@ public class InformPK implements Serializable {
     @Setter
     private String name;
 
+    public InformPK() {
+
+    }
+    public InformPK(Date date, String name) {
+        this.date = date;
+        this.name = name;
+    }
 }

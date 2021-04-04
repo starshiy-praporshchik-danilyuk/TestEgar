@@ -1,5 +1,6 @@
 package com.example.project_test.domain;
 
+import com.sun.istack.NotNull;
 import lombok.*;
 
 import javax.persistence.Entity;
@@ -18,14 +19,22 @@ public class Inform {
 
     private Date date;
 
+
     @Id
     @Getter
     @Setter
     private String name;
+
 
     @Getter
     @Setter
     private int price;
     public Inform(){}
 
+
+    public Inform(Date date, String name, int price) {
+        this.date = date;
+        this.name = name;
+        this.price = price;
+    }
 }
