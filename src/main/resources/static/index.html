@@ -6,8 +6,6 @@
 
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 
-
-
     <style>
         table {
             font-family: arial, sans-serif;
@@ -28,19 +26,20 @@
 </head>
 
 <body>
-<h3>Сервис учета стоимости ценных бумаг</h3>
-<div>
-    <form action="#">
+<h3><p align="center">Сервис учета стоимости ценных бумаг</p></h3>
+<div style="margin-top: 30px" >
+    <form>
         <input type="date" id="date" placeholder="Введите дату"  />
         <input type="text" id="name" placeholder="Название" />
         <input type="number" min=0 id="price" placeholder="Цена" />
         <button onclick="createInform()">Добавить</button>
     </form>
-
+</div>
+<div style="margin-top: 30px">
     <table id="informsList">
 
     </table>
-
+</div>
     <div id="chart_div" style="width: 100%; height: 500px;"></div>
 
 <script>
@@ -48,23 +47,29 @@
     setTimeout(loadInforms, 100);
 
     function createInform() {
-    var informDate = document.getElementById("date").value;
-    var informName = document.getElementById("name").value;
-    var informPrice = document.getElementById("price").value;
+        var informDate = document.getElementById("date").value;
+        var informName = document.getElementById("name").value;
+        var informPrice = document.getElementById("price").value;
 
-    var xmlhttp = new XMLHttpRequest();
-    xmlhttp.open("POST", "http://localhost:8081/inform/save", true);
-    xmlhttp.setRequestHeader("Content-Type", "application/json");
-    xmlhttp.send(JSON.stringify({date: informDate, name: informName, price: informPrice}));
+        if (informPrice < 0 || !Number.isInteger(Number(informPrice))) return;
 
+        var xmlhttp = new XMLHttpRequest();
+        xmlhttp.open("POST", "http://localhost:8081/inform", true);
+        xmlhttp.setRequestHeader("Content-Type", "application/json");
+        xmlhttp.send(JSON.stringify({date: informDate, name: informName, price: informPrice}));
 
-    setTimeout(loadInforms, 100);
-    setTimeout(drawChart, 100);
+        setTimeout(loadInforms, 100);
+        setTimeout(drawChart, 100);
+
+        document.getElementById("date").value = "";
+        document.getElementById("name").value = "";
+        document.getElementById("price").value = "";
     }
 
+
     function loadInforms() {
-        var xhttp = new XMLHttpRequest();
-        xhttp.onreadystatechange = function () {
+        var xmlhttp = new XMLHttpRequest();
+        xmlhttp.onreadystatechange = function () {
             if (this.readyState == 4 && this.status == 200) {
                 var informs = JSON.parse(this.responseText);
                 var html = '<tr>\n' +
@@ -86,8 +91,8 @@
                 document.getElementById("informsList").innerHTML = html;
             }
         };
-        xhttp.open("GET", "http://localhost:8081/inform/findAll", true);
-        xhttp.send();
+        xmlhttp.open("GET", "http://localhost:8081/inform", true);
+        xmlhttp.send();
     }
 
     function updateInform(length, i, oldDate, oldName){
@@ -97,7 +102,7 @@
         var informPrice = document.getElementById("val" + (i + 2*length)).value;
 
         var xmlhttp = new XMLHttpRequest();
-        xmlhttp.open("PUT", "http://localhost:8081/inform/update", true);
+        xmlhttp.open("PUT", "http://localhost:8081/inform", true);
         xmlhttp.setRequestHeader("Content-Type", "application/json");
         xmlhttp.send(JSON.stringify({newDate: informDate, newName: informName, newPrice: informPrice, oldDate: oldDate, oldName: oldName}));
 
@@ -107,10 +112,10 @@
 
 
     function deleteInform(informDate, informName){
-        var xhttp1 = new XMLHttpRequest();
-        xhttp1.open("DELETE", "http://localhost:8081/inform/delete", true);
-        xhttp1.setRequestHeader("Content-Type", "application/json");
-        xhttp1.send(JSON.stringify({date: informDate, name: informName}));
+        var xmlhttp = new XMLHttpRequest();
+        xmlhttp.open("DELETE", "http://localhost:8081/inform", true);
+        xmlhttp.setRequestHeader("Content-Type", "application/json");
+        xmlhttp.send(JSON.stringify({date: informDate, name: informName}));
 
         setTimeout(loadInforms, 100);
         setTimeout(drawChart, 100);
@@ -121,8 +126,8 @@
     google.charts.setOnLoadCallback(drawChart);
 
     function drawChart() {
-        var xhttp = new XMLHttpRequest();
-        xhttp.onreadystatechange = function () {
+        var xmlhttp = new XMLHttpRequest();
+        xmlhttp.onreadystatechange = function () {
             if (this.readyState == 4 && this.status == 200) {
                 var Arr = JSON.parse(this.responseText);
 
@@ -173,8 +178,8 @@
 
             }
         };
-        xhttp.open("GET", "http://localhost:8081/inform/findAll", true);
-        xhttp.send();
+        xmlhttp.open("GET", "http://localhost:8081/inform", true);
+        xmlhttp.send();
 
     }
 

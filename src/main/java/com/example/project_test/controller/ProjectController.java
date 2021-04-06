@@ -5,6 +5,7 @@ import com.example.project_test.domain.InformPK;
 import com.example.project_test.repo.InformRepo;
 import lombok.AllArgsConstructor;
 import lombok.extern.java.Log;
+import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.*;
 
 import java.sql.Date;
@@ -22,27 +23,26 @@ public class ProjectController {
 
     private InformRepo informRepo;
 
-    @PostMapping("/save")
+    @PostMapping("")
     public Inform Create(@RequestBody Inform inform){
         log.info("Handling save users: " + informRepo);
         return informRepo.save(inform);
     }
 
-
-    @GetMapping("/findAll")
+    @GetMapping("")
     public List<Inform> findAllInforms(){
         log.info("Handling find all informs request");
 
-        return informRepo.findAll();
+        return informRepo.findAll(Sort.by("date"));
     }
 
-    @DeleteMapping("/delete")
+    @DeleteMapping("")
     public void Delete(@RequestBody InformPK id){
         log.info("Handling delete inform request: " + id);
         informRepo.deleteById(id);
     }
 
-    @PutMapping("/update")
+    @PutMapping("")
     public void Update(@RequestBody Struct struct){
         InformPK informPK = new InformPK(struct.getOldDate(), struct.getOldName());
         informRepo.deleteById(informPK);
