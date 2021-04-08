@@ -7,12 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.extern.java.Log;
 import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.*;
-
-import java.sql.Date;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/inform")
@@ -21,28 +16,24 @@ import java.util.stream.Collectors;
 @CrossOrigin
 public class ProjectController {
 
-    private InformRepo informRepo;
+    private final InformRepo informRepo;
 
-    @PostMapping("")
+    @PostMapping
     public Inform Create(@RequestBody Inform inform){
-        log.info("Handling save users: " + informRepo);
         return informRepo.save(inform);
     }
 
-    @GetMapping("")
+    @GetMapping
     public List<Inform> findAllInforms(){
-        log.info("Handling find all informs request");
-
         return informRepo.findAll(Sort.by("date"));
     }
 
-    @DeleteMapping("")
+    @DeleteMapping
     public void Delete(@RequestBody InformPK id){
-        log.info("Handling delete inform request: " + id);
         informRepo.deleteById(id);
     }
 
-    @PutMapping("")
+    @PutMapping
     public void Update(@RequestBody Struct struct){
         InformPK informPK = new InformPK(struct.getOldDate(), struct.getOldName());
         informRepo.deleteById(informPK);
