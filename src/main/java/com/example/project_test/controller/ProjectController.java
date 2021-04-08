@@ -1,7 +1,7 @@
 package com.example.project_test.controller;
 
-import com.example.project_test.domain.Inform;
-import com.example.project_test.domain.InformPK;
+import com.example.project_test.models.Inform;
+import com.example.project_test.models.InformPK;
 import com.example.project_test.repo.InformRepo;
 import lombok.AllArgsConstructor;
 import lombok.extern.java.Log;

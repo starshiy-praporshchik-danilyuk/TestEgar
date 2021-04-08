@@ -1,6 +1,5 @@
-package com.example.project_test.domain;
+package com.example.project_test.models;
 
-import com.sun.istack.NotNull;
 import lombok.*;
 
 import javax.persistence.Entity;

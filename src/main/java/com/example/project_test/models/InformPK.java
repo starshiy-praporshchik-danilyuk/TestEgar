@@ -1,4 +1,4 @@
-package com.example.project_test.domain;
+package com.example.project_test.models;
 
 import lombok.*;
 
